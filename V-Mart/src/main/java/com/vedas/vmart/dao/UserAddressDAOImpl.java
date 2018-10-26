@@ -22,176 +22,119 @@ public class UserAddressDAOImpl  implements UserAddressDAO{
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	//------------Add UserAdd----------------
-	@Override
-	public List<UserAddressList> insert(UserAddress userAddress) {
-		
-		String sql = "select * from useraddressbook where  addressId =?";
-				
-		return jdbcTemplate.query(sql, new Object[] {userAddress.getAddressId()},new ResultSetExtractor<List<UserAddressList>>() {
-
-			@Override
-			public List<UserAddressList> extractData(ResultSet rs) throws SQLException, DataAccessException {
-				ArrayList<UserAddressList> list=new ArrayList<UserAddressList>();
-				UserAddressList uab = new UserAddressList();
-				if(rs.next()) {
-					
-		            try
-		            {										
-						String sql4 = "update useraddressbook set  name=?, address=?, landmark=?, pinCode=?, area=?, city=?, state=?, mobile=?, fevourite=? where addressId=? and userId=? ";
-						jdbcTemplate.update(sql4,userAddress.getName(),userAddress.getAddress(),userAddress.getLandmark(),userAddress.getPinCode(),userAddress.getArea(),userAddress.getCity(),userAddress.getState(),userAddress.getMobile(),"1",userAddress.getAddressId(),userAddress.getUserId());
-						
-						uab.setMessage("Address Updated...");
-						uab.setResponse("1");
-						
-						list.add(uab);
+	//------------Add UserAddress----------------
+		@Override
+		public List<UserAddressList> insert(UserAddress userAddress) {		
+			String select = "select cart_id from signup where  mobileno=? ";				
+			return jdbcTemplate.query(select, new Object[] { userAddress.getUserId()},new ResultSetExtractor<List<UserAddressList>>() {
+				@Override
+				public List<UserAddressList> extractData(ResultSet rs) throws SQLException, DataAccessException {
+					ArrayList<UserAddressList> list=new ArrayList<UserAddressList>();
+					UserAddressList ual = new UserAddressList();
+					if(rs.next()) {					
+						System.out.println("Cart_Id is : "+rs.getString(1));
+						String Id = "useradd_"+String.valueOf((int)(((Math.random())*1000)+1990));						
+						String insert = "INSERT INTO useraddressbook (addressId,name,address,landmark,pinCode,area,city,state,mobile,favourite,userId,cart_id)"+" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+						int count =jdbcTemplate.update(insert,Id,userAddress.getName(),userAddress.getAddress(),userAddress.getLandmark(),userAddress.getPinCode(),userAddress.getArea(),userAddress.getCity(),userAddress.getState(),userAddress.getMobile(),"0",userAddress.getUserId(),rs.getString(1));
+						if(count>0) {
+							ual.setAddressId(Id);
+							ual.setMessage("Address Added...");
+							ual.setResponse("3");
+							list.add(ual);							
+						}else {							
+							ual.setMessage("Check the data...");
+							ual.setResponse("0");
+							list.add(ual);
+						}										
+					}						
+					return list;					
+				}			
+			});		
+		}
+	
+	//-----------------Update UserAddressBook---------------------
+		@Override
+		public List<UserAddressList> update(UserAddress userAddress) {		
+					ArrayList<UserAddressList> list = new ArrayList<>();
+					UserAddressList ual = new UserAddressList();
+					String update = "update useraddressbook set  name=?, address=?, landmark=?, pinCode=?, area=?, city=?, state=?, mobile=?, favourite=? where addressId=?";
+					int count = jdbcTemplate.update(update,userAddress.getName(),userAddress.getAddress(),userAddress.getLandmark(),userAddress.getPinCode(),userAddress.getArea(),userAddress.getCity(),userAddress.getState(),userAddress.getMobile(),userAddress.getFavourite(),userAddress.getAddressId());
+					if(count>0) {
+						ual.setResponse("3");
+						ual.setMessage("Your Address is updated successfully.");
+						list.add(ual);
+					}else {
+						ual.setResponse("0");
+						ual.setMessage("Your Address not updated.");
+						list.add(ual);
+					}				
+					return list;					
+		}
+	
+	//-----------------Select UserAddress--------------------
+		@Override
+		public List<UserAddressList> select(String mobile) {		
+			String query = "select cart_id from signup where mobileno="+mobile ;		
+			List<UserAddressList> listAddress = jdbcTemplate.query(query, new ResultSetExtractor<List<UserAddressList>>() {
+				@Override
+				public List<UserAddressList> extractData(ResultSet rs) throws SQLException, DataAccessException {
+					ArrayList<UserAddressList> list = new ArrayList<>();
+					UserAddressList cl = new UserAddressList();
+					if(rs.next()) {
+						System.out.println("cart id...." +rs.getString(1));					
+						String join = "select * from useraddressbook where cart_id =? ";					
+						@SuppressWarnings("unused")
+						List<UserAddressList> cart = jdbcTemplate.query(join, new Object[] {rs.getString(1)},new ResultSetExtractor<List<UserAddressList>>() {
+							@Override
+							public List<UserAddressList> extractData(ResultSet rs1) throws SQLException, DataAccessException {
+								ArrayList<UserAddress> al = new ArrayList<UserAddress>();
+								while(rs1.next()) {
+									UserAddress ua = new UserAddress();
+									ua.setAddressId(rs1.getString(1));
+									ua.setName(rs1.getString(2));
+									ua.setAddress(rs1.getString(3));
+									ua.setLandmark(rs1.getString(4));
+									ua.setPinCode(rs1.getString(5));
+									ua.setArea(rs1.getString(6));
+									ua.setCity(rs1.getString(7));
+									ua.setState(rs1.getString(8));
+									ua.setMobile(rs1.getString(9));
+									ua.setFavourite(rs1.getBoolean(10));
+									ua.setUserId(rs1.getString(11));
+									ua.setCart_id(rs1.getNString(12));
+									al.add(ua);
+								}
+								cl.setAddressList(al);
+								return null;
+							}						
+						});					
 					}
-		            catch (Exception e)
-		            {
-		                    e.printStackTrace();
-		            }
-		            
-				}else {
-					String sql5 = "INSERT INTO useraddressbook (addressId,name,address,landmark,pinCode,area,city,state,mobile,fevourite,userId)"+" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-					jdbcTemplate.update(sql5,userAddress.getAddressId(),userAddress.getName(),userAddress.getAddress(),userAddress.getLandmark(),userAddress.getPinCode(),userAddress.getArea(),userAddress.getCity(),userAddress.getState(),userAddress.getMobile(),"0",userAddress.getUserId());
-				
-					uab.setMessage("Address Added...");
-					uab.setResponse("3");
-					
-					list.add(uab);
-					
+					cl.setResponse("3");
+					cl.setMessage("Your Address Book Data");
+					list.add(cl);
+					return list;				
 				}
-			
-				return list;	
-				
-			}
-			
-		});		
+			});	
+			return listAddress;
+		}
 	
-	}
+	//--------------Delete UserAddress------------------
+		@Override
+		public List<UserAddressList> delete(UserAddress userAddress) {		
+			ArrayList<UserAddressList> list = new ArrayList<>();
+			UserAddressList ual = new UserAddressList();
+			String delete = "delete from useraddressbook where addressId=?";
+			int count = jdbcTemplate.update(delete,userAddress.getAddressId());
+			if(count>0) {
+				ual.setResponse("3");
+				ual.setMessage("Your address is removed from addressbook successfully.");
+				list.add(ual);
+			}else {
+				ual.setResponse("0");
+				ual.setMessage("Your address is not removed.");
+				list.add(ual);
+			}		
+			return list;
+		}	
 	
-	//-----------------Select UserAdd--------------------
-
-	@Override
-	public List<UserAddressList> select(UserAddress userAddress) {
-		
-		String sql = "select * from useraddressbook ";
-				
-		return jdbcTemplate.query(sql, new ResultSetExtractor<List<UserAddressList>>() {
-
-			@Override
-			public List<UserAddressList> extractData(ResultSet rs) throws SQLException, DataAccessException {
-				ArrayList<UserAddressList> list=new ArrayList<UserAddressList>();
-				UserAddress ua = new UserAddress();
-				while(rs.next()) {				
-		           
-						ua.setAddressId(rs.getString(1));
-						ua.setName(rs.getString(2));
-						ua.setAddress(rs.getString(3));
-						ua.setLandmark(rs.getString(4));
-						ua.setPinCode(rs.getString(5));
-						ua.setArea(rs.getString(6));
-						ua.setCity(rs.getString(7));
-						ua.setState(rs.getString(8));
-						ua.setMobile(rs.getString(9));
-						
-						//list.add();
-						
-						}
-			
-				return list;	
-				
-			}
-			
-		});		
-		
-	}
-
-	@Override
-	public List<UserAddressList> list() {
-		// TODO Auto-generated method stub
-		
-		String sql = "select * from useraddressbook";
-		List<UserAddressList> listContact = jdbcTemplate.query(sql, new ResultSetExtractor<List<UserAddressList>>() {
-
-			@Override
-			public List<UserAddressList> extractData(ResultSet rs) throws SQLException, DataAccessException {
-				// TODO Auto-generated method stub
-				ArrayList<UserAddressList> list=new ArrayList<UserAddressList>();  
-				ArrayList<UserAddress> cat = new ArrayList<UserAddress>();
-				UserAddressList ctg = new UserAddressList();
-				
-		        while(rs.next()){  
-		        	UserAddress e=new UserAddress();
-		        	e.setAddressId(rs.getString(1));
-		        	e.setMobile(rs.getString(9));
-		        	
-		        	cat.add(e); 	
-		        	
-		        }
-		        
-		        
-		        ctg.setResponse("3");
-		        ctg.setMessage("fetch successfully");
-		        list.add(ctg);
-				return list;
-			}
-			
-		});
-		
-		return listContact;
-		
-	}
-	
-	
-	
-
-	
-	
-		
-		/*
-		
-		String sql = "select * from useraddressbook";
-		List<UserAddressList> listContact = jdbcTemplate.query(sql, new ResultSetExtractor<List<UserAddressList>>() {
-
-			@Override
-			public List<UserAddressList> extractData(ResultSet rs) throws SQLException, DataAccessException {
-				ArrayList<UserAddressList> list = new ArrayList<UserAddressList>();
-				ArrayList<UserAddress> cat =new ArrayList<UserAddress>();  
-				
-				UserAddressList ctg = new UserAddressList();
-				
-		        while(rs.next()){
-		        	UserAddress pl = new UserAddress();
-		        	pl.setAddressId(rs.getString(1));
-		        	pl.setName(rs.getString(2));
-		        	pl.setAddress(rs.getString(3));
-		        	pl.setLandmark(rs.getString(4));
-		        	pl.setPinCode(rs.getString(5));
-		        	pl.setArea(rs.getString(6));
-		        	pl.setCity(rs.getString(7));
-		        	pl.setState(rs.getString(8));
-		        	pl.setMobile(rs.getString(9));
-		        	cat.add(pl);
-		        	
-		        	
-		        }
-		        ctg.setProductsList(cat);
-		        ctg.setResponse("3");
-		        ctg.setMessage("fetched products lists");
-		        list.add(ctg);
-		        return list;
-		        
-			}
-			
-		});
-		// TODO Auto-generated method stub
-		return listContact;
-	*/
-		
-	
-	
-	
-	
-
 }

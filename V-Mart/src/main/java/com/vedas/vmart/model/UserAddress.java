@@ -11,8 +11,9 @@ public class UserAddress {
 	private String City;
 	private String State;
 	private String Mobile;
-	private Boolean fevourite;
+	private Boolean favourite;
 	private String userId;
+	private String cart_id;
 	
 	public String getAddressId() {
 		return addressId;
@@ -67,12 +68,12 @@ public class UserAddress {
 	}
 	public void setMobile(String mobile) {
 		Mobile = mobile;
+	}	
+	public Boolean getFavourite() {
+		return favourite;
 	}
-	public Boolean getFevourite() {
-		return fevourite;
-	}
-	public void setFevourite(Boolean fevourite) {
-		this.fevourite = fevourite;
+	public void setFavourite(Boolean favourite) {
+		this.favourite = favourite;
 	}
 	public String getUserId() {
 		return userId;
@@ -80,6 +81,11 @@ public class UserAddress {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
-	
+	public String getCart_id() {
+		return cart_id;
+	}
+	public void setCart_id(String cart_id) {
+		this.cart_id = cart_id;
+	}
+		
 }
