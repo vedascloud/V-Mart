@@ -25,17 +25,17 @@ public class UserAddressDAOImpl  implements UserAddressDAO{
 	//------------Add UserAddress----------------
 		@Override
 		public List<UserAddressList> insert(UserAddress userAddress) {		
-			String select = "select cart_id from signup where  mobileno=? ";				
+			String select = "select * from signup where  mobileno=? ";				
 			return jdbcTemplate.query(select, new Object[] { userAddress.getUserId()},new ResultSetExtractor<List<UserAddressList>>() {
 				@Override
 				public List<UserAddressList> extractData(ResultSet rs) throws SQLException, DataAccessException {
 					ArrayList<UserAddressList> list=new ArrayList<UserAddressList>();
 					UserAddressList ual = new UserAddressList();
 					if(rs.next()) {					
-						System.out.println("Cart_Id is : "+rs.getString(1));
+						
 						String Id = "useradd_"+String.valueOf((int)(((Math.random())*1000)+1990));						
-						String insert = "INSERT INTO useraddressbook (addressId,name,address,landmark,pinCode,area,city,state,mobile,favourite,userId,cart_id)"+" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-						int count =jdbcTemplate.update(insert,Id,userAddress.getName(),userAddress.getAddress(),userAddress.getLandmark(),userAddress.getPinCode(),userAddress.getArea(),userAddress.getCity(),userAddress.getState(),userAddress.getMobile(),"0",userAddress.getUserId(),rs.getString(1));
+						String insert = "INSERT INTO useraddressbook (addressId,name,address,landmark,pinCode,area,city,state,mobile,favourite,userId)"+" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+						int count =jdbcTemplate.update(insert,Id,userAddress.getName(),userAddress.getAddress(),userAddress.getLandmark(),userAddress.getPinCode(),userAddress.getArea(),userAddress.getCity(),userAddress.getState(),userAddress.getMobile(),"0",userAddress.getUserId());
 						if(count>0) {
 							ual.setAddressId(Id);
 							ual.setMessage("Address Added...");
@@ -72,21 +72,17 @@ public class UserAddressDAOImpl  implements UserAddressDAO{
 		}
 	
 	//-----------------Select UserAddress--------------------
+		
 		@Override
 		public List<UserAddressList> select(String mobile) {		
-			String query = "select cart_id from signup where mobileno="+mobile ;		
-			List<UserAddressList> listAddress = jdbcTemplate.query(query, new ResultSetExtractor<List<UserAddressList>>() {
-				@Override
-				public List<UserAddressList> extractData(ResultSet rs) throws SQLException, DataAccessException {
-					ArrayList<UserAddressList> list = new ArrayList<>();
-					UserAddressList cl = new UserAddressList();
-					if(rs.next()) {
-						System.out.println("cart id...." +rs.getString(1));					
-						String join = "select * from useraddressbook where cart_id =? ";					
+						ArrayList<UserAddressList>	list = new ArrayList<>();
+						UserAddressList ul = new UserAddressList(); 
+						String join = "select * from useraddressbook where userId = "+mobile ;							
 						@SuppressWarnings("unused")
-						List<UserAddressList> cart = jdbcTemplate.query(join, new Object[] {rs.getString(1)},new ResultSetExtractor<List<UserAddressList>>() {
+						List<UserAddressList> cart = jdbcTemplate.query(join,new ResultSetExtractor<List<UserAddressList>>() {
 							@Override
 							public List<UserAddressList> extractData(ResultSet rs1) throws SQLException, DataAccessException {
+															
 								ArrayList<UserAddress> al = new ArrayList<UserAddress>();
 								while(rs1.next()) {
 									UserAddress ua = new UserAddress();
@@ -101,22 +97,20 @@ public class UserAddressDAOImpl  implements UserAddressDAO{
 									ua.setMobile(rs1.getString(9));
 									ua.setFavourite(rs1.getBoolean(10));
 									ua.setUserId(rs1.getString(11));
-									ua.setCart_id(rs1.getNString(12));
+								
 									al.add(ua);
 								}
-								cl.setAddressList(al);
-								return null;
-							}						
-						});					
-					}
-					cl.setResponse("3");
-					cl.setMessage("Your Address Book Data");
-					list.add(cl);
-					return list;				
-				}
-			});	
-			return listAddress;
+								ul.setAddressList(al);
+								return null;							
+							}							
+						});
+					    ul.setResponse("3");
+						ul.setMessage("Your Address Book Data");
+						list.add(ul);
+						return list;					
 		}
+		
+		
 	
 	//--------------Delete UserAddress------------------
 		@Override
