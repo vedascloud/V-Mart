@@ -26,7 +26,7 @@ private JdbcTemplate jdbcTemplate;
 	public List<CartList> addcart(Cart cart) {
 		
 					
-			String query = "select cart_id from signup where mobileno= ?" ;
+			String query = "select * from signup where mobileno= ?" ;
 			
 			List<CartList> listContact = jdbcTemplate.query(query, new Object[] {cart.getMobileNumber()}, new ResultSetExtractor<List<CartList>>() {
 
@@ -36,11 +36,10 @@ private JdbcTemplate jdbcTemplate;
 					CartList cl = new CartList();
 					if(rs.next()) {
 						
-					System.out.println("cart id..." +rs.getString(1));
-						
+						System.out.println("cart id..." +cart.getCartId());
 						int count = jdbcTemplate.update(
 							    "INSERT INTO cart(cart_id,pro_id,mobile,itemName,mrpPrice,vmartPrice,quantity,netweight,timestamp)VALUES(?,?,?,?,?,?,?,?,?)", new Object[] {
-							      rs.getString(1),cart.getProductId(),cart.getMobileNumber(),cart.getItemName(),cart.getMrpPrice(),cart.getVmartPrice(),cart.getQuantity(),cart.getNetWeight(),cart.getTimeStamp()
+							      cart.getCartId(),cart.getProductId(),cart.getMobileNumber(),cart.getItemName(),cart.getMrpPrice(),cart.getVmartPrice(),cart.getQuantity(),cart.getNetWeight(),cart.getTimeStamp()
 							        });
 						if(count>0) {
 							cl.setResponse("3");
@@ -108,23 +107,14 @@ private JdbcTemplate jdbcTemplate;
 	@Override
 	public List<CartList> getcart(String mobile) {
 		
-		String query = "select cart_id from signup where mobileno= ?" ;
-		
-		List<CartList> listContact = jdbcTemplate.query(query, new Object[] {mobile}, new ResultSetExtractor<List<CartList>>() {
-
-			@Override
-			public List<CartList> extractData(ResultSet rs) throws SQLException, DataAccessException {
-				ArrayList<CartList> list = new ArrayList<>();
-				CartList cl = new CartList();
-				if(rs.next()) {
-					System.out.println("cart id...." +rs.getString(1));
-					
+					ArrayList<CartList> list = new ArrayList<>();
+					CartList cl = new CartList();
 					String join = "SELECT cart.cart_id,cart.pro_id,cart.mobile,products.itemname,products.url,cart.mrpPrice,cart.vmartPrice,cart.quantity,cart.netweight,products.sub_id,cart.timestamp"
 							+ "     FROM products "
-							+ "     INNER JOIN cart ON products.quantity=cart.netweight where products.pro_id=cart.pro_id and cart_id=? order by timestamp desc";  //Here joined 2 tables and fetched the data.
+							+ "     INNER JOIN cart ON products.quantity=cart.netweight where products.pro_id=cart.pro_id and mobile=? order by timestamp desc";  //Here joined 2 tables and fetched the data.
 					
 					@SuppressWarnings("unused")
-					List<CartList> cart = jdbcTemplate.query(join, new Object[] {rs.getString(1)},new ResultSetExtractor<List<CartList>>() {
+					List<CartList> cart = jdbcTemplate.query(join, new Object[] {mobile},new ResultSetExtractor<List<CartList>>() {
 
 						@Override
 						public List<CartList> extractData(ResultSet rs1) throws SQLException, DataAccessException {
@@ -150,34 +140,23 @@ private JdbcTemplate jdbcTemplate;
 						
 					});
 					
-				}
+				
 				cl.setResponse("3");
 				cl.setMessage("your cart data");
 				list.add(cl);
 				return list;
-				
-			}
-		});
-		
+					
 	
-		return listContact;
 	}
 
 	@Override
 	public List<CartList> deleteallcartitems(String mobile) {
 		
-String query = "select cart_id from signup where mobileno= ?" ;
-		
-		List<CartList> listContact = jdbcTemplate.query(query, new Object[] {mobile}, new ResultSetExtractor<List<CartList>>() {
-
-			@Override
-			public List<CartList> extractData(ResultSet rs) throws SQLException, DataAccessException {
-				ArrayList<CartList> list = new ArrayList<>();
-				CartList cl = new CartList();
-				if(rs.next()) {
-					System.out.println("cart id's..." +rs.getString(1));
-					String delete = "delete from cart where cart_id=?";
-					int count = jdbcTemplate.update(delete,rs.getString(1));
+					ArrayList<CartList> list = new ArrayList<>();
+					CartList cl = new CartList();
+					
+					String delete = "delete from cart where mobile=?";
+					int count = jdbcTemplate.update(delete,mobile);
 					if(count>0) {
 						cl.setResponse("3");
 						cl.setMessage("cart data deleted");
@@ -187,15 +166,13 @@ String query = "select cart_id from signup where mobileno= ?" ;
 						cl.setMessage("cart data not deleted");
 						list.add(cl);
 					}
-				}
+				
 				
 				
 				return list;
-			}
-			
-		});
+		
 							
-		return listContact;
+		
 	}
 
 }
