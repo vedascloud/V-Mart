@@ -13,7 +13,6 @@ public class UserAddress {
 	private String Mobile;
 	private Boolean favourite;
 	private String userId;
-	private String cart_id;
 	
 	public String getAddressId() {
 		return addressId;
@@ -81,11 +80,6 @@ public class UserAddress {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getCart_id() {
-		return cart_id;
-	}
-	public void setCart_id(String cart_id) {
-		this.cart_id = cart_id;
-	}
+	
 		
 }

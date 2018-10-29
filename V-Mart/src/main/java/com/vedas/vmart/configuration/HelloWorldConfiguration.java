@@ -25,8 +25,8 @@ import com.vedas.vmart.dao.ProductListDAO;
 import com.vedas.vmart.dao.ProductListDAOImpl;
 import com.vedas.vmart.dao.SignUpDAO;
 import com.vedas.vmart.dao.SignUpDAOImpl;
-
-
+import com.vedas.vmart.dao.UserAddressDAO;
+import com.vedas.vmart.dao.UserAddressDAOImpl;
 
 @Configuration
 @EnableWebMvc
@@ -48,6 +48,7 @@ public class HelloWorldConfiguration extends WebMvcConfigurerAdapter{
 	                 .addResourceLocations("classpath:/images/");
 	    }
  
+	//--------------------------Configuared DataSource as a Bean--------------------------------
     @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -58,38 +59,52 @@ public class HelloWorldConfiguration extends WebMvcConfigurerAdapter{
         System.out.print("database connection..."+dataSource);
         return dataSource;
     }
-     
+    
+	//--------------------------Configuared ContactDAO as a Bean--------------------------------
     @Bean
     public ContactDAO getContactDAO() {
         return new ContactDAOImpl(getDataSource());
     }
-    
+
+    //--------------------------Configuared CategoryListDAO as a Bean--------------------------------
     @Bean
     public CategoryListDAO getCategoryListDAO(){
     	return new CategoryListDAOImpl(getDataSource());
     }
     
+	//--------------------------Configuared ProductListDAO as a Bean--------------------------------
     @Bean
     public ProductListDAO getProductListDAO(){
     	return new ProductListDAOImpl(getDataSource());
     }
     
+	//--------------------------Configuared SignUpDAO as a Bean--------------------------------
+
     @Bean
     public SignUpDAO getSignUpDAO() {
 		return new SignUpDAOImpl(getDataSource());
     	
     }
     
+	//--------------------------Configuared OtpVerificatioDAO as a Bean--------------------------------
+
     @Bean
     public OtpVerificatioDAO getOtpVerificatioDAO() {
 		return new OtpVerificatioDAOImpl(getDataSource());
     	
     }
     
+	//--------------------------Configuared CartDAO as a Bean--------------------------------
     @Bean
     public CartDAO getCartDAO() {
 		return new CartDAOImpl(getDataSource());
     	
+    }
+    
+	//--------------------------Configuared UserAddressDAO as a Bean--------------------------------
+    @Bean
+    public UserAddressDAO getUserAddressDAO() {
+    	return new UserAddressDAOImpl(getDataSource());
     }
 
   
