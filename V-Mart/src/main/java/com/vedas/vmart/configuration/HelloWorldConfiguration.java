@@ -1,6 +1,8 @@
 package com.vedas.vmart.configuration;
 
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
@@ -27,6 +29,9 @@ import com.vedas.vmart.dao.SignUpDAO;
 import com.vedas.vmart.dao.SignUpDAOImpl;
 import com.vedas.vmart.dao.UserAddressDAO;
 import com.vedas.vmart.dao.UserAddressDAOImpl;
+import com.vedas.vmart.dao.VMartAddressDAO;
+import com.vedas.vmart.dao.VMartAddressDAOImpl;
+import com.vedas.vmart.model.VMartAddressList;
 
 @Configuration
 @EnableWebMvc
@@ -105,6 +110,11 @@ public class HelloWorldConfiguration extends WebMvcConfigurerAdapter{
     @Bean
     public UserAddressDAO getUserAddressDAO() {
     	return new UserAddressDAOImpl(getDataSource());
+    }
+    
+    @Bean
+    public VMartAddressDAO getVMartAddressDAO() {
+		return new VMartAddressDAOImpl(getDataSource());     	
     }
 
   
