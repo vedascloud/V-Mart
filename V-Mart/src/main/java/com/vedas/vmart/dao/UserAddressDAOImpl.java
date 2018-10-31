@@ -35,7 +35,7 @@ public class UserAddressDAOImpl  implements UserAddressDAO{
 						
 						String Id = "useradd_"+String.valueOf((int)(((Math.random())*1000)+1990));						
 						String insert = "INSERT INTO useraddressbook (addressId,name,address,landmark,pinCode,area,city,state,mobile,favourite,userId)"+" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-						int count =jdbcTemplate.update(insert,Id,userAddress.getName(),userAddress.getAddress(),userAddress.getLandmark(),userAddress.getPinCode(),userAddress.getArea(),userAddress.getCity(),userAddress.getState(),userAddress.getMobile(),"0",userAddress.getUserId());
+						int count =jdbcTemplate.update(insert,Id,userAddress.getName(),userAddress.getAddress(),userAddress.getLandmark(),userAddress.getPinCode(),userAddress.getArea(),userAddress.getCity(),userAddress.getState(),userAddress.getMobile(),userAddress.getFavourite(),userAddress.getUserId());
 						if(count>0) {
 							ual.setAddressId(Id);
 							ual.setMessage("Address Added...");
