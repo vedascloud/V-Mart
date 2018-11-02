@@ -2,17 +2,17 @@ package com.vedas.vmart.model;
 
 import java.util.ArrayList;
 
-public class OtpVerifyList {
+public class TimingsList {
 	
 	private String response;
 	private String message;
-	private String cartId;
+	private ArrayList<Timings> timings;
 	
-	public String getCartId() {
-		return cartId;
+	public ArrayList<Timings> getTimings() {
+		return timings;
 	}
-	public void setCartId(String cartId) {
-		this.cartId = cartId;
+	public void setTimings(ArrayList<Timings> timings) {
+		this.timings = timings;
 	}
 	public String getResponse() {
 		return response;
@@ -26,10 +26,7 @@ public class OtpVerifyList {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	private ArrayList<Cart> cartData;
-
-	  public ArrayList<Cart> getCartData() { return this.cartData; }
-
-	  public void setCartData(ArrayList<Cart> cartData) { this.cartData = cartData; }
+	
+	
 
 }

@@ -20,8 +20,9 @@ import com.vedas.vmart.model.UserAddressList;
 @RestController
 public class UserAddressController {
 	
+	//Service which will do all data retrieval/manipulation work
 	@Autowired
-	 UserAddressDAO addService;  //Service which will do all data retrieval/manipulation work
+	UserAddressDAO addService;  
 	
 	//--------------Add UserAddress Data--------------------------------------------------------------------------------------------
 	@RequestMapping(value = "/insertuseradrs", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -70,7 +71,7 @@ public class UserAddressController {
         return new ResponseEntity<List<UserAddressList>>(user,HttpStatus.OK);
     }
 	
-	//-------------------------Delete UserAddress Data--------------------------------------------------------------------------------
+	 //-------------------------Delete UserAddress Data--------------------------------------------------------------------------------
 	 @RequestMapping(value = "/deleteuseradrs",method = RequestMethod.DELETE,produces =  MediaType.APPLICATION_JSON_VALUE)
 		 public ResponseEntity<List<UserAddressList>> addressdelete(@RequestBody UserAddress userAddress){
 			 List<UserAddressList> user = addService.delete(userAddress);

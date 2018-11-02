@@ -21,7 +21,7 @@ private JdbcTemplate jdbcTemplate;
 	public CartDAOImpl(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-
+//======================== To Insert Cart ===========================
 	@Override
 	public List<CartList> addcart(Cart cart) {
 		
@@ -36,8 +36,7 @@ private JdbcTemplate jdbcTemplate;
 					CartList cl = new CartList();
 					if(rs.next()) {
 						
-						System.out.println("cart id..." +cart.getCartId());
-						int count = jdbcTemplate.update(
+								int count = jdbcTemplate.update(
 							    "INSERT INTO cart(cart_id,pro_id,mobile,itemName,mrpPrice,vmartPrice,quantity,netweight,timestamp)VALUES(?,?,?,?,?,?,?,?,?)", new Object[] {
 							      cart.getCartId(),cart.getProductId(),cart.getMobileNumber(),cart.getItemName(),cart.getMrpPrice(),cart.getVmartPrice(),cart.getQuantity(),cart.getNetWeight(),cart.getTimeStamp()
 							        });
@@ -61,10 +60,10 @@ private JdbcTemplate jdbcTemplate;
 			return listContact;
 			
 	}
-
+//================To update cart======================================
 	@Override
 	public List<CartList> update(Cart cart) {
-		
+		System.out.println("cart values...." +cart);
 				ArrayList<CartList> list = new ArrayList<>();
 				CartList cl = new CartList();
 				String update = "update cart set mrpPrice=?,vmartPrice=?,quantity=? where netweight=? and pro_id=? and mobile=?";
@@ -82,7 +81,7 @@ private JdbcTemplate jdbcTemplate;
 				return list;
 					
 	}
-
+//=========================== To delete cart items based on user id=======================
 	@Override
 	public List<CartList> delete(Cart cart) {
 		
@@ -104,6 +103,7 @@ private JdbcTemplate jdbcTemplate;
 		
 	}
 
+	//============================ Get cart data ==============================
 	@Override
 	public List<CartList> getcart(String mobile) {
 		
@@ -149,6 +149,7 @@ private JdbcTemplate jdbcTemplate;
 	
 	}
 
+	//============================= delete cart list =======================================
 	@Override
 	public List<CartList> deleteallcartitems(String mobile) {
 		

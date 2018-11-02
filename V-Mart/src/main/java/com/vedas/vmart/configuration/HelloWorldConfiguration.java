@@ -16,20 +16,25 @@ import com.vedas.vmart.dao.CategoryListDAOImpl;
 import com.vedas.vmart.dao.CartDAO;
 import com.vedas.vmart.dao.CartDAOImpl;
 import com.vedas.vmart.dao.CategoryListDAO;
-import com.vedas.vmart.dao.ContactDAO;
-import com.vedas.vmart.dao.ContactDAOImpl;
 import com.vedas.vmart.dao.ContactUsDAO;
 import com.vedas.vmart.dao.ContactUsDAOImpl;
+import com.vedas.vmart.dao.OrdersListDAO;
+import com.vedas.vmart.dao.OrdersListDAOImpl;
 import com.vedas.vmart.dao.OtpVerificatioDAO;
 import com.vedas.vmart.dao.OtpVerificatioDAOImpl;
 import com.vedas.vmart.dao.ProductListDAO;
 import com.vedas.vmart.dao.ProductListDAOImpl;
 import com.vedas.vmart.dao.SignUpDAO;
 import com.vedas.vmart.dao.SignUpDAOImpl;
+
+import com.vedas.vmart.dao.TimingsListDAO;
+import com.vedas.vmart.dao.TimingsListDAOImpl;
 import com.vedas.vmart.dao.UserAddressDAO;
 import com.vedas.vmart.dao.UserAddressDAOImpl;
+
 import com.vedas.vmart.dao.VMartAddressDAO;
 import com.vedas.vmart.dao.VMartAddressDAOImpl;
+
 
 @Configuration
 @EnableWebMvc
@@ -61,12 +66,6 @@ public class HelloWorldConfiguration extends WebMvcConfigurerAdapter{
         dataSource.setPassword("vedas");
         System.out.print("database connection..."+dataSource);
         return dataSource;
-    }
-    
-	//--------------------------Configuared ContactDAO as a Bean--------------------------------
-    @Bean
-    public ContactDAO getContactDAO() {
-        return new ContactDAOImpl(getDataSource());
     }
 
     //--------------------------Configuared CategoryListDAO as a Bean--------------------------------
@@ -103,6 +102,13 @@ public class HelloWorldConfiguration extends WebMvcConfigurerAdapter{
 		return new CartDAOImpl(getDataSource());
     	
     }
+
+    
+   @Bean
+   public TimingsListDAO geTimingsListDAO() {
+	   return new TimingsListDAOImpl(getDataSource());
+   }
+
     
 	//--------------------------Configuared UserAddressDAO as a Bean--------------------------------
     @Bean
@@ -110,17 +116,20 @@ public class HelloWorldConfiguration extends WebMvcConfigurerAdapter{
     	return new UserAddressDAOImpl(getDataSource());
     }
     
-    //--------------------------Configuared VMartAddressDAO as a Bean--------------------------------
     @Bean
     public VMartAddressDAO getVMartAddressDAO() {
 		return new VMartAddressDAOImpl(getDataSource());     	
     }
     
-    //--------------------------Configuared ContactUsDAO as a Bean--------------------------------
+    @Bean
+    public OrdersListDAO getOrdersListDAO() {
+    	return new OrdersListDAOImpl(getDataSource());
+    }
+    
     @Bean
     public ContactUsDAO getContactUsDAO() {
-		return new ContactUsDAOImpl();     	
+    	return new ContactUsDAOImpl();
     }
-
+    
   
 }

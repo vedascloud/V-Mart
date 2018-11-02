@@ -16,7 +16,7 @@ import com.vedas.vmart.model.VMartAddressList;
 
 public class VMartAddressDAOImpl implements VMartAddressDAO{
 	
-private JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 	
 	public VMartAddressDAOImpl(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
@@ -55,7 +55,7 @@ private JdbcTemplate jdbcTemplate;
 		ul.setMessage("Your Address Book Data");
 		list.add(ul);
 		return list;					
-}
+	}
 
 	@Override
 	public List<VMartAddressList> select() {		
@@ -90,7 +90,7 @@ private JdbcTemplate jdbcTemplate;
 		ul.setMessage("V-Mart Address Book Data");
 		list.add(ul);
 		return list;					
-}
+	}
 
 	@Override
 	public List<VMartAddressList> update(VMartAddress vMartAddress) {		
@@ -108,7 +108,7 @@ private JdbcTemplate jdbcTemplate;
 			list.add(ual);
 		}				
 		return list;					
-}
+	}
 
 	
 

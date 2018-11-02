@@ -108,9 +108,7 @@ public class UserAddressDAOImpl  implements UserAddressDAO{
 						ul.setMessage("Your Address Book Data");
 						list.add(ul);
 						return list;					
-		}
-		
-		
+		}		
 	
 	//--------------Delete UserAddress------------------
 		@Override

@@ -20,10 +20,11 @@ import com.vedas.vmart.model.VMartAddressList;
 @RestController
 public class VMartAddressController {
 	
+	//Service which will do all data retrieval/manipulation work
 	@Autowired
 	VMartAddressDAO vmartaddService;
 	
-	//-------------------------Fetch V-Mart Address Data Using City--------------------------------------------------------------------------------
+	//-------------------------Fetch V-Mart Address Data By Using City--------------------------------------------------------------------------------
 		@RequestMapping(value = "/getvmartadrs/{wantedcity}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<List<VMartAddressList>> getCart(@PathVariable("wantedcity") String wantedcity) {
 	        List<VMartAddressList> user = vmartaddService.select(wantedcity);
@@ -57,7 +58,7 @@ public class VMartAddressController {
 	        return new ResponseEntity<List<VMartAddressList>>(user,HttpStatus.OK);
 	    }
 		
-		//-------------------------Update UserAddress Data--------------------------------------------------------------------------------
+		//-------------------------Update V-MartAddress Data--------------------------------------------------------------------------------
 		@RequestMapping(value = "/updatevmartadrs", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<List<VMartAddressList>> updateAddress(@RequestBody VMartAddress vMartAddress) {
 			List<VMartAddressList> users = vmartaddService.update(vMartAddress);

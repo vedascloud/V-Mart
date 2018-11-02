@@ -91,8 +91,7 @@ public class SignUpDAOImpl implements SignUpDAO{
 		                        	  
 		                        	  int count = jdbcTemplate.update(sql2, mobileNumber,response,otp,"0",id);
 		                        	  if(count>0) {
-		                        		    sign.setCatId(id);
-	                        	  			sign.setResponse("3");
+		                       	  			sign.setResponse("3");
 	    		        					sign.setMessage("OTP successfully sent to your mobileno ");
 	    		        					list.add(sign);
 		                        		  

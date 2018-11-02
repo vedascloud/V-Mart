@@ -79,7 +79,6 @@ public class UserAddress {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
-	}
-	
+	}	
 		
 }
