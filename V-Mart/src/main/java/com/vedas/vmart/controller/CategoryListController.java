@@ -19,7 +19,7 @@ public class CategoryListController {
 	
 	//-------------------Retrieve All Users--------------------------------------------------------
     
-    @RequestMapping(value = "/categories/", method = RequestMethod.GET)
+    @RequestMapping(value = "/categories", method = RequestMethod.GET)
     public ResponseEntity<List<CategoryList>> listAllUsers() {
         List<CategoryList> users = categoryService.list();
         if(users.isEmpty()){

@@ -19,15 +19,15 @@ public class VmartOrdersController {
 	@Autowired
 	private OrdersListDAO vmartorderService;
 	
-	 @RequestMapping(value = "/insertorders", method = RequestMethod.POST,produces = "application/json")
-	 public ResponseEntity<List<OrdersList>> addcarts(@RequestBody String json) {
-			 
-        List<OrdersList> user = vmartorderService.insert(json);
+	 @RequestMapping(value = "/orders", method = RequestMethod.POST,produces = "application/json")
+	 public ResponseEntity<List<OrdersList>> addcarts(@RequestBody String orders) {
+		 
+        List<OrdersList> user = vmartorderService.insert(orders);
         
         if (user == null) {
             List<OrdersList> pl1 = new ArrayList<OrdersList>();
             OrdersList pl = new OrdersList();
-            pl.setMessage("no products available");
+            pl.setMessage("order not placed successfull");
             pl.setResponse("0");
             pl1.add(pl);
             return new ResponseEntity<List<OrdersList>>(pl1,HttpStatus.NOT_FOUND);

@@ -23,7 +23,7 @@ public class CartController {
 	@Autowired
 	 private CartDAO cartService;
 	 
-	 		 @RequestMapping(value = "/addcart", method = RequestMethod.POST,produces = "application/json")
+	 		 @RequestMapping(value = "/cart", method = RequestMethod.POST,produces = "application/json")
 			 public ResponseEntity<List<CartList>> addcarts(@RequestBody Cart cart) {
 					 
 		        List<CartList> user = cartService.addcart(cart);
@@ -40,7 +40,7 @@ public class CartController {
 		 }
 	 		 
 
-	 		 @RequestMapping(value = "/updatecart", method = RequestMethod.PUT,produces = "application/json")
+	 		 @RequestMapping(value = "/cart", method = RequestMethod.PUT,produces = "application/json")
 			 public ResponseEntity<List<CartList>> cartupdate(@RequestBody Cart cart) {
 					 
 		        List<CartList> user = cartService.update(cart);
@@ -56,7 +56,7 @@ public class CartController {
 		        return new ResponseEntity<List<CartList>>(user,HttpStatus.OK);
 		 }
 	 		 
-	 		 @RequestMapping(value = "/deletecart",method = RequestMethod.DELETE,produces = "application/json")
+	 		 @RequestMapping(value = "/cart",method = RequestMethod.DELETE,produces = "application/json")
 	 		 public ResponseEntity<List<CartList>> cartdelete(@RequestBody Cart cart){
 	 			 List<CartList> user = cartService.delete(cart);
 		        
@@ -71,7 +71,7 @@ public class CartController {
 		        return new ResponseEntity<List<CartList>>(user,HttpStatus.OK);
 	 		 }
 	 		 
-	 		@RequestMapping(value = "/getcart/{mobile}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 		@RequestMapping(value = "/cart/{mobile}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 		    public ResponseEntity<List<CartList>> getCart(@PathVariable("mobile") String mobile) {
 		        List<CartList> user = cartService.getcart(mobile);
 		        		        
@@ -87,7 +87,7 @@ public class CartController {
 		        return new ResponseEntity<List<CartList>>(user,HttpStatus.OK);
 		    }
 	 		
-	 		 @RequestMapping(value = "/deleteallcarts/{mobile}",method = RequestMethod.DELETE,produces = "application/json")
+	 		 @RequestMapping(value = "/cart/{mobile}",method = RequestMethod.DELETE,produces = "application/json")
 	 		 public ResponseEntity<List<CartList>> allcartitemsdelete(@PathVariable("mobile") String mobile){
 	 			 List<CartList> user = cartService.deleteallcartitems(mobile);
 		        

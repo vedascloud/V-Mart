@@ -13,8 +13,13 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 
 import com.vedas.vmart.model.Cart;
 import com.vedas.vmart.model.CartList;
+import com.vedas.vmart.model.DeliveryInfo;
+import com.vedas.vmart.model.ItemsInfo;
+import com.vedas.vmart.model.OrderInfo;
+import com.vedas.vmart.model.OrdersList;
 import com.vedas.vmart.model.OtpVerification;
 import com.vedas.vmart.model.OtpVerifyList;
+
 
 public class OtpVerificatioDAOImpl implements OtpVerificatioDAO {
 	
@@ -71,6 +76,67 @@ public class OtpVerificatioDAOImpl implements OtpVerificatioDAO {
 								}
 								resmodel.setCartData(al);
 								return null;
+							}
+							
+						});
+						
+						String orders = "select distinct orderid,userid,totalcost,deliverycharges,deliverytype,paymenttype,timestamp,name,mobile,address,pin,deliverydate,deliverytime from vmartorders where userid=?";
+						@SuppressWarnings("unused")
+						List<OrdersList> order = jdbcTemplate.query(orders, new Object[] {otp.getMobileNumber()},new ResultSetExtractor<List<OrdersList>>() {
+							
+							@Override
+							public List<OrdersList> extractData(ResultSet rs) throws SQLException, DataAccessException {
+								ArrayList<OrderInfo> o = new ArrayList<>();
+								
+								if(rs.next()) {
+									OrderInfo oi = new OrderInfo();
+									oi.setOrderId(rs.getString(1));
+									oi.setUserId(rs.getString(2));
+									oi.setTotalCoast(rs.getString(3));
+									oi.setDeliveryCharges(rs.getString(4));
+									oi.setDeliveryType(rs.getString(5));
+									oi.setPaymentType(rs.getString(6));
+									oi.setTimeStamp(rs.getString(7));
+									
+									System.out.println("userid..." +rs.getString(1));
+									DeliveryInfo di = new DeliveryInfo();
+									di.setName(rs.getString(8));
+									di.setMobileno(rs.getString(9));
+									di.setAddress(rs.getString(10));
+									di.setPin(rs.getString(11));
+									di.setDeliveryDate(rs.getString(12));
+									di.setDeliveryTime(rs.getString(13));
+									oi.setDeliveryInfo(di);
+									String items = "select * from vmartorders where orderid = ?";
+									jdbcTemplate.query(items, new Object[] {rs.getString(1)},new ResultSetExtractor<ItemsInfo>() {
+
+										@Override
+										public ItemsInfo extractData(ResultSet rs1) throws SQLException,
+												DataAccessException {
+											
+												ArrayList<ItemsInfo> ii = new ArrayList<>();
+												while(rs1.next()) {
+													ItemsInfo ii1 = new ItemsInfo();
+													ii1.setProductId(rs1.getString(14));
+													ii1.setItemName(rs1.getString(15));
+													ii1.setQauntity(rs1.getString(16));
+													ii1.setPrice(rs1.getString(17));
+													ii1.setNetWeight(rs1.getString(18));
+													ii.add(ii1);
+													
+												}
+												oi.setItemsInfo(ii);
+												return null;
+											
+										}
+										
+									});
+									o.add(oi);
+									
+								}
+								resmodel.setOrderInfo(o);
+								return null;
+								
 							}
 							
 						});

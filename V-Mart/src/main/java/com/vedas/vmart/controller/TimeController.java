@@ -18,7 +18,7 @@ public class TimeController {
 	@Autowired
 	private TimingsListDAO timeresource;
 	
-	 @RequestMapping(value = "/gettimeslot", method = RequestMethod.GET,produces = "application/json")
+	 @RequestMapping(value = "/timings", method = RequestMethod.GET,produces = "application/json")
 	 
 	 public ResponseEntity<List<TimingsList>> addcarts() {
 		 

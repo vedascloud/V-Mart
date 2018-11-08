@@ -40,7 +40,7 @@ public class ProductController {
 	    }
 	
 	
-	@RequestMapping(value = "/productlist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProductList>> getUser() {
        
         List<ProductList> user = productService.getall();
