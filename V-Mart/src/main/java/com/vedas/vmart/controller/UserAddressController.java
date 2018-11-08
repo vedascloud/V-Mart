@@ -20,12 +20,11 @@ import com.vedas.vmart.model.UserAddressList;
 @RestController
 public class UserAddressController {
 	
-	//Service which will do all data retrieval/manipulation work
 	@Autowired
-	UserAddressDAO addService;  
+	 UserAddressDAO addService;  //Service which will do all data retrieval/manipulation work
 	
 	//--------------Add UserAddress Data--------------------------------------------------------------------------------------------
-	@RequestMapping(value = "/insertuseradrs", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/useraddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserAddressList>> userAddress(@RequestBody UserAddress userAddress) {
 		List<UserAddressList> users = addService.insert(userAddress);
         if(users == null){
@@ -40,7 +39,7 @@ public class UserAddressController {
     }
 	
 	//-------------------------Update UserAddress Data--------------------------------------------------------------------------------
-	@RequestMapping(value = "/updateuseradrs", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/useraddress", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserAddressList>> updateAddress(@RequestBody UserAddress userAddress) {
 		List<UserAddressList> users = addService.update(userAddress);
         if(users == null){
@@ -55,7 +54,7 @@ public class UserAddressController {
     }
 	
 	//-------------------------Fetch UserAddress Data--------------------------------------------------------------------------------
-	@RequestMapping(value = "/getuseradrs/{mobile}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/useraddress/{mobile}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserAddressList>> getCart(@PathVariable("mobile") String mobile) {
         List<UserAddressList> user = addService.select(mobile);
         		        
@@ -71,8 +70,8 @@ public class UserAddressController {
         return new ResponseEntity<List<UserAddressList>>(user,HttpStatus.OK);
     }
 	
-	 //-------------------------Delete UserAddress Data--------------------------------------------------------------------------------
-	 @RequestMapping(value = "/deleteuseradrs",method = RequestMethod.DELETE,produces =  MediaType.APPLICATION_JSON_VALUE)
+	//-------------------------Delete UserAddress Data--------------------------------------------------------------------------------
+	 @RequestMapping(value = "/useraddress",method = RequestMethod.DELETE,produces =  MediaType.APPLICATION_JSON_VALUE)
 		 public ResponseEntity<List<UserAddressList>> addressdelete(@RequestBody UserAddress userAddress){
 			 List<UserAddressList> user = addService.delete(userAddress);
         

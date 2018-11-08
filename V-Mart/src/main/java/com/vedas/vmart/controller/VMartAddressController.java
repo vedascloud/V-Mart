@@ -20,12 +20,11 @@ import com.vedas.vmart.model.VMartAddressList;
 @RestController
 public class VMartAddressController {
 	
-	//Service which will do all data retrieval/manipulation work
 	@Autowired
 	VMartAddressDAO vmartaddService;
 	
-	//-------------------------Fetch V-Mart Address Data By Using City--------------------------------------------------------------------------------
-		@RequestMapping(value = "/getvmartadrs/{wantedcity}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	//-------------------------Fetch V-Mart Address Data Using City--------------------------------------------------------------------------------
+		@RequestMapping(value = "/vmartaddress/{wantedcity}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<List<VMartAddressList>> getCart(@PathVariable("wantedcity") String wantedcity) {
 	        List<VMartAddressList> user = vmartaddService.select(wantedcity);
 	        		        
@@ -42,7 +41,7 @@ public class VMartAddressController {
 	    }
 	
 	//-------------------------Fetch V-MartAddress Data--------------------------------------------------------------------------------
-		@RequestMapping(value = "/getvmartadrs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+		@RequestMapping(value = "/vmartaddress", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<List<VMartAddressList>> listVmartAdrs() {
 	        List<VMartAddressList> user = vmartaddService.select();
 	        		        
@@ -58,8 +57,8 @@ public class VMartAddressController {
 	        return new ResponseEntity<List<VMartAddressList>>(user,HttpStatus.OK);
 	    }
 		
-		//-------------------------Update V-MartAddress Data--------------------------------------------------------------------------------
-		@RequestMapping(value = "/updatevmartadrs", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+		//-------------------------Update UserAddress Data--------------------------------------------------------------------------------
+		@RequestMapping(value = "/vmartaddress", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<List<VMartAddressList>> updateAddress(@RequestBody VMartAddress vMartAddress) {
 			List<VMartAddressList> users = vmartaddService.update(vMartAddress);
 	        if(users == null){
